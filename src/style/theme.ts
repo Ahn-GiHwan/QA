@@ -5,9 +5,10 @@ export interface Itheme {
 }
 
 export const lightTheme = {
-  bg: '#e1ffb1',
+  bg: '#aed581',
+  // bg: '#8bc34a',
   bgBold: '#aed581',
-  text: 'black',
+  text: 'white',
 };
 
 export const darkTheme = {
