@@ -8,8 +8,16 @@ const Stack = createNativeStackNavigator();
 export default function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="signin" component={SignIn} />
-      <Stack.Screen name="signup" component={SignUp} />
+      <Stack.Screen
+        name="signin"
+        component={SignIn}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="signup"
+        component={SignUp}
+        options={{title: '회원가입'}}
+      />
     </Stack.Navigator>
   );
 }
