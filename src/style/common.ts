@@ -12,3 +12,10 @@ export const ThemeView = styled.View`
 export const ThemeText = styled.Text`
   color: ${({theme}: {theme: Itheme}) => theme.text && theme.text};
 `;
+
+export const ThemeTextInput = styled.TextInput.attrs({
+  importantForAutofill: 'yes',
+  placeholderTextColor: 'gray',
+})`
+  color: ${({theme}: {theme: Itheme}) => theme.text && theme.text};
+`;
