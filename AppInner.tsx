@@ -12,9 +12,18 @@ export type afterSigninNavigation = {
   Category: undefined;
   Setting: undefined;
   CategoryList: undefined;
-  CategoryInfo: {_id: string; name: string; memo: string | undefined};
+  CategoryInfo: {
+    _id?: string | undefined;
+    name?: string | undefined;
+    memo?: string | undefined;
+  };
   Detail: {_id: string; name: string; memo: string | undefined};
-  QAInfo: {_id: string; categoryId: string; q: string; a: string};
+  QAInfo: {
+    _id?: string | null;
+    categoryId?: string | undefined;
+    q?: string | undefined;
+    a?: string | undefined;
+  };
 };
 export type beforeSigninNavigation = {
   Signin: undefined;
