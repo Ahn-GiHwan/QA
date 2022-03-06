@@ -1,11 +1,13 @@
-import axios from 'axios';
 import React, {useCallback, useRef, useState} from 'react';
 import {ActivityIndicator, Alert, TextInput} from 'react-native';
-import Config from 'react-native-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 import DismissKeyboardView from '../components/DismissKeyboardView';
 import {ThemeSafeAreaView, ThemeText, ThemeView} from '../style/common';
 import {Itheme} from '../style/theme';
+import accountSlice from '../redux/accountSlice';
+import {useAppDispatch} from '../redux';
+import {signInFetch} from '../api/account';
 
 const SafeArea = styled(ThemeSafeAreaView)`
   flex: 1;
@@ -64,8 +66,8 @@ const ErrorText = styled.Text`
 const LoginButton = styled.Pressable`
   border-radius: 10px;
   padding-vertical: 15px;
-  background-color: ${({disabled, theme}: {disabled: boolean; theme: Itheme}) =>
-    disabled ? 'gray' : theme.bg};
+  background-color: ${({theme}: {theme: Itheme}) => theme.bg};
+  opacity: ${({disabled}) => (disabled ? 0.4 : 1)};
 `;
 
 const LoginButtonText = styled.Text`
@@ -89,11 +91,12 @@ function SignIn({navigation: {navigate}}) {
   const [idErrMsg, setIdErrMsg] = useState('');
   const [pw, setPw] = useState('');
   const [pwErrMsg, setPwErrMsg] = useState('');
-  const [autoLogin, setAutoLogin] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const idRef = useRef<TextInput | any>(null);
   const pwRef = useRef<TextInput | any>(null);
+
+  const dispatch = useAppDispatch();
 
   const fillInput = id && pw && !idErrMsg && !pwErrMsg;
 
@@ -126,10 +129,11 @@ function SignIn({navigation: {navigate}}) {
   const onSubmit = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await axios.post(`${Config.URL}/account/signin`, {id, pw});
-      const result = data.data.success;
+      const result = await signInFetch(id, pw);
       if (result) {
         Alert.alert('성공', '환영합니다.');
+        await AsyncStorage.setItem('id', id);
+        dispatch(accountSlice.actions.setSignIn(id));
       } else {
         Alert.alert('실패', '아이디와 비빌번호를 다시 확인해 주세요.');
       }
@@ -138,7 +142,7 @@ function SignIn({navigation: {navigate}}) {
       console.log(error);
       setLoading(false);
     }
-  }, [id, pw]);
+  }, [dispatch, id, pw]);
 
   const reset = useCallback(() => {
     setId('');
@@ -149,7 +153,7 @@ function SignIn({navigation: {navigate}}) {
 
   const onGoSignUp = useCallback(() => {
     reset();
-    navigate('signup');
+    navigate('Signup');
   }, [navigate, reset]);
 
   return (
@@ -186,7 +190,7 @@ function SignIn({navigation: {navigate}}) {
           </InputWrapper>
           <LoginButton disabled={!fillInput} onPress={onSubmit}>
             {loading ? (
-              <ActivityIndicator color="black" />
+              <ActivityIndicator color="white" />
             ) : (
               <LoginButtonText color={!fillInput}>로그인</LoginButtonText>
             )}
