@@ -75,16 +75,22 @@ const AddButtonText = styled.Text`
 `;
 
 type ParamList = {
-  Info: {
-    data: {_id: string; name: string; memo: string};
+  CategoryInfo: {
+    data: {
+      _id?: string | undefined;
+      name?: string | undefined;
+      memo?: string | undefined;
+    };
   };
 };
 
 function CategoryInfo() {
-  const {params} = useRoute<RouteProp<ParamList, 'Info'>>();
-  const _id = params?.data?._id;
-  const prevName = params?.data?.name;
-  const prevMemo = params?.data?.memo;
+  const {
+    params: {data},
+  } = useRoute<RouteProp<ParamList, 'CategoryInfo'>>();
+  const _id = data?._id;
+  const prevName = data?.name;
+  const prevMemo = data?.memo;
   const id = useSelector((state: RootState) => state.account.id);
   const {refetch} = useQuery('getCategory', () => getCategoryFetch(id));
   const {refetch: detailRefetch} = useQuery('getCategoryDetail', () =>
