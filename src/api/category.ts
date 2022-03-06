@@ -8,7 +8,7 @@ export const getCategoryFetch = async (id: string) => {
   return data;
 };
 
-export const getCategoryDetailFetch = async (_id: string) => {
+export const getCategoryDetailFetch = async (_id: string | undefined) => {
   const {data} = await axios.get(`${Config.URL + POINT}/getCategory/${_id}`);
   return data[0];
 };
@@ -40,7 +40,7 @@ export const addCategoryFetch = async (
   return success;
 };
 
-export const deleteCategory = async (_id: string) => {
+export const deleteCategory = async (_id: string | undefined) => {
   const {
     data: {success},
   } = await axios.delete(`${Config.URL + POINT}/deleteCategory/${_id}`);
