@@ -1,5 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import styled from 'styled-components/native';
 import {ActivityIndicator, Alert} from 'react-native';
 import {afterSigninNavigation} from '../../AppInner';
@@ -45,9 +50,9 @@ const EditButtonText = styled.Text`
 `;
 
 interface Idata {
-  _id: string;
-  name: string;
-  memo: string;
+  _id?: string | undefined;
+  name?: string | undefined;
+  memo?: string | undefined;
 }
 
 function DetailHeaderRight({data}: {data: Idata}) {
@@ -144,9 +149,17 @@ const AddButton = styled.Pressable`
 
 const AddButtonText = styled(ThemeText)``;
 
-function Detail({route: {params}, navigation: {setOptions}}) {
-  const [ishideA, setIsHideA] = useState<boolean>(false);
-  const {_id} = params;
+type ParamList = {
+  Detail: {_id: string; name: string; memo: string | undefined};
+};
+
+function Detail() {
+  const globalIsHideA = useSelector((state: RootState) => state.hideA.isHideA);
+  const [ishideA, setIsHideA] = useState<boolean>(globalIsHideA);
+  const {
+    params: {_id},
+  } = useRoute<RouteProp<ParamList, 'Detail'>>();
+
   const {isRefetching: DetailLogin, data: DetailData} = useQuery(
     'getCategoryDetail',
     () => getCategoryDetailFetch(_id),
@@ -161,11 +174,11 @@ function Detail({route: {params}, navigation: {setOptions}}) {
   const navigation = useNavigation<NavigationProp<afterSigninNavigation>>();
 
   useEffect(() => {
-    setOptions({
+    navigation.setOptions({
       title: DetailData?.name,
       headerRight: () => <DetailHeaderRight data={DetailData} />,
     });
-  }, [DetailData, setOptions]);
+  }, [DetailData, navigation]);
 
   const renderItem = useCallback(
     ({item}) => <EachQA item={item} ishideA={ishideA} />,
@@ -199,7 +212,7 @@ function Detail({route: {params}, navigation: {setOptions}}) {
             </HeaderMenu>
             <FlatList
               data={QAListData}
-              keyExtractor={item => item._id}
+              keyExtractor={item => item?._id}
               renderItem={renderItem}
               onRefresh={categoryListFetch}
               refreshing={isRefetching}
