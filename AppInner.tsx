@@ -11,10 +11,10 @@ export type afterSigninNavigation = {
   Home: undefined;
   Category: undefined;
   Setting: undefined;
-  List: undefined;
-  Info: {_id: string; name: string; memo: string | undefined};
+  CategoryList: undefined;
+  CategoryInfo: {_id: string; name: string; memo: string | undefined};
   Detail: {_id: string; name: string; memo: string | undefined};
-  AddQA: {_id: string | undefined};
+  QAInfo: {_id: string; categoryId: string; q: string; a: string};
 };
 export type beforeSigninNavigation = {
   Signin: undefined;
