@@ -8,6 +8,8 @@ import {Itheme} from '../style/theme';
 import accountSlice from '../redux/accountSlice';
 import {useAppDispatch} from '../redux';
 import {signInFetch} from '../api/account';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {beforeSigninNavigation} from '../../AppInner';
 
 const SafeArea = styled(ThemeSafeAreaView)`
   flex: 1;
@@ -73,7 +75,7 @@ const LoginButton = styled.Pressable`
 const LoginButtonText = styled.Text`
   text-align: center;
   font-weight: bold;
-  color: ${({color, theme}: {color: string; theme: Itheme}) =>
+  color: ${({color, theme}: {color: boolean; theme: Itheme}) =>
     color ? 'white' : theme.text};
 `;
 
@@ -86,7 +88,7 @@ const SignUpButtonText = styled.Text`
   color: black;
 `;
 
-function SignIn({navigation: {navigate}}) {
+function SignIn() {
   const [id, setId] = useState('');
   const [idErrMsg, setIdErrMsg] = useState('');
   const [pw, setPw] = useState('');
@@ -96,6 +98,7 @@ function SignIn({navigation: {navigate}}) {
   const idRef = useRef<TextInput | any>(null);
   const pwRef = useRef<TextInput | any>(null);
 
+  const navigation = useNavigation<NavigationProp<beforeSigninNavigation>>();
   const dispatch = useAppDispatch();
 
   const fillInput = id && pw && !idErrMsg && !pwErrMsg;
@@ -153,8 +156,8 @@ function SignIn({navigation: {navigate}}) {
 
   const onGoSignUp = useCallback(() => {
     reset();
-    navigate('Signup');
-  }, [navigate, reset]);
+    navigation.navigate('Signup');
+  }, [navigation, reset]);
 
   return (
     <SafeArea>
