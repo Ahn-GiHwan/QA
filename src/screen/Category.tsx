@@ -45,7 +45,7 @@ function Category() {
           headerRight: ListHeaderRight,
         }}
       />
-      <Stack.Screen name="Detail" component={Detail} options={{title: ''}} />
+      <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen
         name="CategoryInfo"
         component={CategoryInfo}
