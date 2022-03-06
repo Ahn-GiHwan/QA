@@ -1,8 +1,7 @@
-import axios from 'axios';
 import React, {useCallback, useRef, useState} from 'react';
 import {ActivityIndicator, Alert, TextInput} from 'react-native';
-import Config from 'react-native-config';
 import styled from 'styled-components/native';
+import {signUpFetch} from '../api/account';
 import DismissKeyboardView from '../components/DismissKeyboardView';
 import {ThemeSafeAreaView, ThemeText, ThemeView} from '../style/common';
 import {Itheme} from '../style/theme';
@@ -64,8 +63,8 @@ const ErrorText = styled.Text`
 const SignUpButton = styled.Pressable`
   border-radius: 10px;
   padding-vertical: 15px;
-  background-color: ${({disabled, theme}: {disabled: boolean; theme: Itheme}) =>
-    disabled ? 'gray' : theme.bg};
+  background-color: ${({theme}: {theme: Itheme}) => theme.bg};
+  opacity: ${({disabled}) => (disabled ? 0.4 : 1)};
 `;
 
 const SignUpButtonText = styled.Text`
@@ -138,12 +137,12 @@ function SignUp({navigation: {navigate}}) {
     }
     try {
       setLoading(true);
-      const data = await axios.post(`${Config.URL}/account/signup`, {id, pw});
-      const result = data.data.success;
+      const result = await signUpFetch(id, pw);
+
       setLoading(false);
       if (result) {
         Alert.alert('성공', '회원가입 성공.');
-        navigate('signin');
+        navigate('Signin');
       } else {
         Alert.alert('실패', '이미 있는 아이디입니다.');
         idRef.current?.focus();
