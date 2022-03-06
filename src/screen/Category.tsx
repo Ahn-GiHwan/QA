@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 function ListHeaderRight() {
   const navigation = useNavigation<NavigationProp<afterSigninNavigation>>();
   const onAdd = useCallback(() => {
-    navigation.navigate('CategoryInfo');
+    navigation.navigate('CategoryInfo', {});
   }, [navigation]);
 
   return (
