@@ -9,12 +9,12 @@ export default function MyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="signin"
+        name="Signin"
         component={SignIn}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="signup"
+        name="Signup"
         component={SignUp}
         options={{title: '회원가입'}}
       />
