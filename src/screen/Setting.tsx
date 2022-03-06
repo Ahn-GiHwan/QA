@@ -12,6 +12,7 @@ import {ThemeText, ThemeView} from '../style/common';
 const Container = styled(ThemeView)`
   flex: 1;
   align-items: center;
+  justify-content: space-around;
 `;
 
 const Id = styled(ThemeText)`
@@ -19,13 +20,23 @@ const Id = styled(ThemeText)`
   font-weight: bold;
 `;
 
+const SwitchView = styled.View`
+  align-items: center;
+`;
+
 const SwitchText = styled(ThemeText)``;
 
 const Switch = styled.Switch``;
 
-const LogoutButton = styled.Pressable``;
+const LogoutButton = styled.Pressable`
+  border-radius: 10px;
+  padding: 10px;
+  background-color: red;
+`;
 
-const LogoutButtonText = styled(Text)``;
+const LogoutButtonText = styled(ThemeText)`
+  font-weight: bold;
+`;
 
 function Setting() {
   const [id, setId] = useState<string | null>('');
@@ -53,8 +64,10 @@ function Setting() {
   return (
     <Container>
       <Id>{id}</Id>
-      <SwitchText>기본 A 숨기기 </SwitchText>
-      <Switch value={isHideA} onValueChange={onChangeHide} />
+      <SwitchView>
+        <SwitchText>기본 A 숨기기 </SwitchText>
+        <Switch value={isHideA} onValueChange={onChangeHide} />
+      </SwitchView>
       <LogoutButton onPress={onLogout}>
         <LogoutButtonText>로그아웃</LogoutButtonText>
       </LogoutButton>
